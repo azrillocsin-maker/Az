@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Portfolio | About Me</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-primary-500 selection:text-white">
+
+    <!-- =====================================================================
+         NAVIGATION BAR (Persistent across all pages)
+         ===================================================================== -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Brand / Logo -->
+                <a href="#about" onclick="navigateTo('about')" class="flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-600 to-violet-500 flex items-center justify-center text-white font-display font-bold text-lg shadow-md shadow-primary-500/20 group-hover:scale-105 transition-transform">
+                        YN
+                    </div>
+                    <span class="font-display font-bold text-lg tracking-tight text-slate-900 dark:text-white">
+                        Your<span class="text-primary-600 dark:text-primary-400">Name</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1" id="desktop-nav">
+                    <a href="#about" data-page="about" onclick="navigateTo('about')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">About Me</a>
+                    <a href="#school" data-page="school" onclick="navigateTo('school')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">School History</a>
+                    <a href="#sports" data-page="sports" onclick="navigateTo('sports')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">Sports</a>
+                    <a href="#age" data-page="age" onclick="navigateTo('age')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">Age & Milestones</a>
+                    <a href="#hobbies" data-page="hobbies" onclick="navigateTo('hobbies')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">Hobbies</a>
+                    <a href="#contact" data-page="contact" onclick="navigateTo('contact')" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium transition-all">Contact</a>
+                </nav>
+
+                <!-- Right Controls: GitHub Guide, Theme Toggle & Mobile Menu Button -->
+                <div class="flex items-center gap-2">
+                    <button onclick="openGithubModal()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:opacity-90 transition shadow-sm">
+                        <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                        <span>GitHub Guide</span>
+                    </button>
+
+                    <!-- Dark/Light Mode Button -->
+                    <button id="theme-toggle" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" aria-label="Open Menu" class="md:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        <i data-lucide="menu" class="w-5 h-5" id="menu-icon-open"></i>
+                        <i data-lucide="x" class="w-5 h-5 hidden" id="menu-icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <a href="#about" data-page="about" onclick="navigateTo('about')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">About Me</a>
+            <a href="#school" data-page="school" onclick="navigateTo('school')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">School History</a>
+            <a href="#sports" data-page="sports" onclick="navigateTo('sports')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">Sports</a>
+            <a href="#age" data-page="age" onclick="navigateTo('age')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">Age & Milestones</a>
+            <a href="#hobbies" data-page="hobbies" onclick="navigateTo('hobbies')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">Hobbies & Interests</a>
+            <a href="#contact" data-page="contact" onclick="navigateTo('contact')" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium">Contact</a>
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                <button onclick="openGithubModal(); toggleMobileMenu(false);" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    <span>How to Upload to GitHub</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         MAIN CONTENT AREA (Multi-Page Views)
+         ===================================================================== -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- =================================================================
+             PAGE 1: ABOUT ME (Main Landing Page)
+             ================================================================= -->
+        <section id="page-about" class="page-section space-y-12">
+            <!-- Hero Card -->
+            <div class="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-10 lg:p-12 shadow-sm">
+                <!-- Decorative Gradient Blobs -->
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-violet-500/10 dark:bg-violet-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                    <!-- Profile Avatar Placeholder -->
+                    <div class="relative shrink-0">
+                        <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl overflow-hidden ring-4 ring-primary-500/20 shadow-xl bg-slate-100 dark:bg-slate-800">
+                            <!-- Replace src with your own photo URL or local image like "profile.jpg" -->
+                            <img src="https://placehold.co/400x400/4f46e5/ffffff?text=Your+Photo" 
+                                 onerror="this.src='https://placehold.co/400x400/334155/ffffff?text=Avatar'" 
+                                 alt="Profile Picture" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <span class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-white shadow-md flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            Open to Connect
+                        </span>
+                    </div>
+
+                    <!-- Bio & Intro Text -->
+                    <div class="text-center lg:text-left space-y-4 flex-1">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-700 dark:bg-primary-500/10 dark:text-primary-300">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                            <span>Welcome to My Personal Website</span>
+                        </div>
+                        
+                        <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-violet-500">[Your Full Name]</span>
+                        </h1>
+                        
+                        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                            [Write a short introduction about yourself here! For example: I am a passionate student, athlete, and aspiring developer based in Your City. Explore the pages above to learn about my school journey, favorite sports, age milestones, and everyday hobbies.]
+                        </p>
+
+                        <!-- Quick Action Buttons -->
+                        <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                            <button onclick="navigateTo('school')" class="px-5 py-3 rounded-xl font-semibold text-sm bg-primary-600 hover:bg-primary-700 text-white shadow-md shadow-primary-500/25 transition flex items-center gap-2">
+                                <span>Explore My Journey</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="navigateTo('contact')" class="px-5 py-3 rounded-xl font-semibold text-sm bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                                <span>Say Hello</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Facts Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div onclick="navigateTo('age')" class="cursor-pointer group rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 hover:border-primary-500/50 transition shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cake" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Current Age</p>
+                    <h3 class="font-display text-2xl font-bold mt-1 text-slate-900 dark:text-white" id="about-quick-age">20 Years Old</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Click to see birthday countdown &rarr;</p>
+                </div>
+
+                <div onclick="navigateTo('school')" class="cursor-pointer group rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 hover:border-primary-500/50 transition shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Education</p>
+                    <h3 class="font-display text-2xl font-bold mt-1 text-slate-900 dark:text-white">[Your School]</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">View full school history &rarr;</p>
+                </div>
+
+                <div onclick="navigateTo('sports')" class="cursor-pointer group rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 hover:border-primary-500/50 transition shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trophy" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Main Sport</p>
+                    <h3 class="font-display text-2xl font-bold mt-1 text-slate-900 dark:text-white">[Basketball / Track]</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Check sports & stats &rarr;</p>
+                </div>
+
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4">
+                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Hometown</p>
+                    <h3 class="font-display text-2xl font-bold mt-1 text-slate-900 dark:text-white">[Your City, Country]</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Born & Raised</p>
+                </div>
+            </div>
+
+            <!-- Page Directory Cards (So visitors can easily jump to subpages) -->
+            <div class="space-y-4">
+                <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white">Explore My Pages</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div onclick="navigateTo('school')" class="cursor-pointer flex items-start gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:shadow-md hover:border-primary-500/40 transition">
+                        <div class="p-3 rounded-xl bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 shrink-0">
+                            <i data-lucide="book-open" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">School History &rarr;</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">A timeline of my schools from elementary to high school/college, favorite subjects, and academic awards.</p>
+                        </div>
+                    </div>
+
+                    <div onclick="navigateTo('sports')" class="cursor-pointer flex items-start gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:shadow-md hover:border-primary-500/40 transition">
+                        <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                            <i data-lucide="medal" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Sports & Athletics &rarr;</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">The sports I play, teams I've joined, jersey numbers, and memorable game highlights.</p>
+                        </div>
+                    </div>
+
+                    <div onclick="navigateTo('age')" class="cursor-pointer flex items-start gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:shadow-md hover:border-primary-500/40 transition">
+                        <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
+                            <i data-lucide="calendar-heart" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Age & Life Milestones &rarr;</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Live age tracker, birthday details, zodiac sign, and major personal milestones over the years.</p>
+                        </div>
+                    </div>
+
+                    <div onclick="navigateTo('hobbies')" class="cursor-pointer flex items-start gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:shadow-md hover:border-primary-500/40 transition">
+                        <div class="p-3 rounded-xl bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 shrink-0">
+                            <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Hobbies & Interests &rarr;</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">What I love doing in my free time—music playlists, gaming, coding projects, and travel.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             PAGE 2: SCHOOL HISTORY
+             ================================================================= -->
+        <section id="page-school" class="page-section hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">Academic Journey</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">School History</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">Every school I attended, what I learned, and the achievements along the way.</p>
+                </div>
+                <button onclick="navigateTo('about')" class="self-start sm:self-auto px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to About Me</span>
+                </button>
+            </div>
+
+            <!-- Vertical Timeline -->
+            <div class="relative pl-6 sm:pl-8 border-l-2 border-primary-500/30 space-y-8 my-8">
+                
+                <!-- Timeline Item 1: College / University -->
+                <div class="relative rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+                    <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-primary-600 ring-4 ring-white dark:ring-slate-950"></span>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300">
+                            2024 – Present (Current)
+                        </span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> [City, Country]
+                        </span>
+                    </div>
+                    <h3 class="font-display text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">[Your University / College Name]</h3>
+                    <p class="text-sm font-semibold text-primary-600 dark:text-primary-400 mt-0.5">[Degree / Course, e.g., B.S. in Computer Science]</p>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
+                        [Describe your current college experience, student clubs, favorite professors, or major projects you are working on.]
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Dean's List</span>
+                        <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Tech Club Member</span>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2: High School -->
+                <div class="relative rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+                    <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-violet-500 ring-4 ring-white dark:ring-slate-950"></span>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">
+                            2020 – 2024
+                        </span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> [City, Country]
+                        </span>
+                    </div>
+                    <h3 class="font-display text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">[Your High School Name]</h3>
+                    <p class="text-sm font-semibold text-violet-600 dark:text-violet-400 mt-0.5">High School Diploma • STEM Strand</p>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
+                        [Share your high school highlights! Mention graduation honors, varsity teams, science fairs, or memorable friendships.]
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Graduated with Honors</span>
+                        <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Varsity Athlete</span>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3: Elementary / Middle School -->
+                <div class="relative rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+                    <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-950"></span>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                            2014 – 2020
+                        </span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> [City, Country]
+                        </span>
+                    </div>
+                    <h3 class="font-display text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">[Your Elementary / Middle School Name]</h3>
+                    <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5">Primary Education</p>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
+                        [Where it all began! Mention your favorite childhood subjects like Math, Art, or P.E., and early school activities.]
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =================================================================
+             PAGE 3: SPORTS
+             ================================================================= -->
+        <section id="page-sports" class="page-section hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Athletics & Fitness</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Sports & Achievements</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">The sports I play, teams I represent, and trophies earned on the court and field.</p>
+                </div>
+                <button onclick="navigateTo('about')" class="self-start sm:self-auto px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to About Me</span>
+                </button>
+            </div>
+
+            <!-- Sports Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Sport 1 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col">
+                    <div class="h-36 bg-gradient-to-br from-orange-500 to-amber-600 p-6 flex flex-col justify-between text-white">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-xs text-xs font-bold">Primary Sport</span>
+                            <span class="font-display font-extrabold text-2xl opacity-90">#23</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">[Basketball]</h3>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Position: [Point Guard / Forward]</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                [Describe how long you've played, your school varsity or local league team, and your playing style.]
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold">
+                            <span class="text-slate-500">Experience</span>
+                            <span class="text-orange-600 dark:text-orange-400">[6+ Years]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sport 2 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col">
+                    <div class="h-36 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 flex flex-col justify-between text-white">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-xs text-xs font-bold">Secondary Sport</span>
+                            <i data-lucide="activity" class="w-6 h-6 opacity-90"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">[Track & Running]</h3>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Event: [100m Sprint / 5K Fun Runs]</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                [Share your personal best times, weekend running routines, or school intramural track events.]
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold">
+                            <span class="text-slate-500">Personal Record</span>
+                            <span class="text-emerald-600 dark:text-emerald-400">[Your Best Time]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sport 3 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col">
+                    <div class="h-36 bg-gradient-to-br from-blue-500 to-indigo-600 p-6 flex flex-col justify-between text-white">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-xs text-xs font-bold">Recreational</span>
+                            <i data-lucide="waves" class="w-6 h-6 opacity-90"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">[Badminton / Swimming]</h3>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Style: [Singles & Doubles]</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                [Mention sports you enjoy casually with friends and family on weekends to stay active.]
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold">
+                            <span class="text-slate-500">Frequency</span>
+                            <span class="text-blue-600 dark:text-blue-400">[Every Weekend]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trophy Case / Awards List -->
+            <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+                <h2 class="font-display text-xl font-bold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
+                    <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
+                    <span>Medals & Tournament Highlights</span>
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/15 text-amber-600 flex items-center justify-center font-bold shrink-0">1st</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-900 dark:text-white">[Intramural Champions 2024]</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">[Team Captain • Varsity Division]</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-slate-300/30 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold shrink-0">MVP</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-900 dark:text-white">[Most Valuable Player Award]</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">[Regional Youth League]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             PAGE 4: AGE & MILESTONES
+             ================================================================= -->
+        <section id="page-age" class="page-section hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Personal Stats & Timeline</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Age & Life Milestones</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">My birthday details, live age calculator, and key chapters of my life so far.</p>
+                </div>
+                <button onclick="navigateTo('about')" class="self-start sm:self-auto px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to About Me</span>
+                </button>
+            </div>
+
+            <!-- Interactive Live Age & Birthday Card -->
+            <div class="rounded-3xl bg-gradient-to-r from-primary-600 to-violet-600 text-white p-6 sm:p-10 shadow-lg">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-3">
+                        <span class="inline-block px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-xs">
+                            Live Age Counter
+                        </span>
+                        <h2 class="font-display text-3xl sm:text-4xl font-extrabold" id="live-age-heading">
+                            20 Years Old
+                        </h2>
+                        <p class="text-primary-100 text-sm sm:text-base">
+                            Born on <strong id="display-birthdate" class="text-white">May 15, 2006</strong>. You can customize your exact birth date below to test the live counter (or edit it directly in the HTML code!).
+                        </p>
+                        <!-- Interactive Birthdate Tester -->
+                        <div class="pt-2 flex flex-wrap items-center gap-2">
+                            <label for="birthdate-input" class="text-xs font-medium text-primary-100">Change Birthdate:</label>
+                            <input type="date" id="birthdate-input" value="2006-05-15" onchange="updateAgeStats(this.value)" 
+                                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white">
+                        </div>
+                    </div>
+
+                    <!-- Live Breakdown Boxes -->
+                    <div class="grid grid-cols-3 gap-3 sm:gap-4 text-center">
+                        <div class="rounded-2xl bg-white/10 backdrop-blur-xs p-4 border border-white/15">
+                            <div class="font-display text-2xl sm:text-3xl font-extrabold" id="stat-years">20</div>
+                            <div class="text-xs text-primary-100 mt-1">Years</div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 backdrop-blur-xs p-4 border border-white/15">
+                            <div class="font-display text-2xl sm:text-3xl font-extrabold" id="stat-months">246</div>
+                            <div class="text-xs text-primary-100 mt-1">Total Months</div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 backdrop-blur-xs p-4 border border-white/15">
+                            <div class="font-display text-2xl sm:text-3xl font-extrabold" id="stat-days-next">--</div>
+                            <div class="text-xs text-primary-100 mt-1">Days to B-Day</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Life Milestones Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-primary-600 dark:text-primary-400">Age 0 • 2006</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">Hello World!</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Born in [Your Hospital / Hometown]. The start of my story.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Age 10 • 2016</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">First Sports Trophy</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Joined my first youth sports team and discovered my competitive spirit.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Age 18 • 2024</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">High School Graduation</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Graduated from [High School Name] and stepped into adulthood & university life.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             PAGE 5: HOBBIES & INTERESTS (Extra "like that and that" page)
+             ================================================================= -->
+        <section id="page-hobbies" class="page-section hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">Beyond School & Sports</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Hobbies & Interests</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">The things I enjoy doing in my downtime—coding, gaming, music, and exploring new places.</p>
+                </div>
+                <button onclick="navigateTo('about')" class="self-start sm:self-auto px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to About Me</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Hobby 1 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 flex gap-5 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="code-2" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Web Development & Tech</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                            Building cool websites like this one, learning HTML, CSS, and JavaScript, and hosting personal projects on GitHub.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hobby 2 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 flex gap-5 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="headphones" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Music & Playlists</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                            Listening to [Your Favorite Genres, e.g., Lo-Fi, Hip-Hop, Indie Rock] while studying or warming up before a game.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hobby 3 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 flex gap-5 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Gaming</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                            Playing [Your Favorite Games, e.g., NBA 2K, Valorant, Minecraft] with friends on weekends.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hobby 4 -->
+                <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 flex gap-5 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="camera" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white">Photography & Travel</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                            Capturing sunsets, street food adventures, and road trips with family and friends.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             PAGE 6: CONTACT
+             ================================================================= -->
+        <section id="page-contact" class="page-section hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">Get in Touch</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Contact Me</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">Want to collaborate, play a pickup game, or just say hi? Reach out anytime.</p>
+                </div>
+                <button onclick="navigateTo('about')" class="self-start sm:self-auto px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to About Me</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Social Links Column -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+                        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Socials & Direct Links</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Replace these placeholders with your actual social handles.</p>
+                        
+                        <div class="space-y-3 pt-2">
+                            <a href="https://github.com" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition">
+                                <i data-lucide="github" class="w-5 h-5 text-slate-700 dark:text-slate-200"></i>
+                                <span class="text-sm font-medium">github.com/yourusername</span>
+                            </a>
+                            <a href="mailto:your.email@example.com" class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition">
+                                <i data-lucide="mail" class="w-5 h-5 text-primary-600"></i>
+                                <span class="text-sm font-medium">your.email@example.com</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition">
+                                <i data-lucide="instagram" class="w-5 h-5 text-pink-600"></i>
+                                <span class="text-sm font-medium">@yourinstagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Message Form -->
+                <div class="lg:col-span-3">
+                    <form onsubmit="handleContactSubmit(event)" class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 space-y-5 shadow-sm">
+                        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Send a Quick Message</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Your Name</label>
+                                <input type="text" required placeholder="Jane Doe" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Your Email</label>
+                                <input type="email" required placeholder="jane@example.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Message</label>
+                            <textarea rows="4" required placeholder="Write your message here..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+                        </div>
+
+                        <button type="submit" class="px-6 py-3 rounded-xl font-semibold text-sm bg-primary-600 hover:bg-primary-700 text-white shadow-md shadow-primary-500/20 transition flex items-center gap-2">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                            <span>Send Message</span>
+                        </button>
+
+                        <!-- Feedback Toast Box (Replaces alert) -->
+                        <div id="contact-feedback" class="hidden p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-sm font-medium">
+                            Thanks for reaching out! Since GitHub Pages hosts static HTML sites, connect a free service like Formspree or Web3Forms to receive emails directly.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================================
+         FOOTER
+         ===================================================================== -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 py-8 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <p>&copy; <span id="footer-year">2026</span> <strong>[Your Full Name]</strong>. Hosted on GitHub Pages.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#about" onclick="navigateTo('about')" class="hover:text-primary-600 transition">About Me</a>
+                <a href="#school" onclick="navigateTo('school')" class="hover:text-primary-600 transition">School</a>
+                <a href="#sports" onclick="navigateTo('sports')" class="hover:text-primary-600 transition">Sports</a>
+                <a href="#age" onclick="navigateTo('age')" class="hover:text-primary-600 transition">Age</a>
+                <a href="#hobbies" onclick="navigateTo('hobbies')" class="hover:text-primary-600 transition">Hobbies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         GITHUB PAGES DEPLOYMENT GUIDE MODAL
+         ===================================================================== -->
+    <div id="github-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 relative">
+            <button onclick="closeGithubModal()" aria-label="Close modal" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">How to Put This on GitHub</h3>
+                    <p class="text-xs text-slate-500">Free hosting in 4 easy steps</p>
+                </div>
+            </div>
+
+            <ol class="space-y-3 text-sm text-slate-600 dark:text-slate-300 list-decimal list-inside">
+                <li><strong>Customize your info:</strong> Open <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">index.html</code> and replace the bracketed placeholders like <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">[Your Full Name]</code> with your real info.</li>
+                <li><strong>Create a GitHub Repository:</strong> Go to GitHub.com, click <strong>New Repository</strong>, and name it <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">yourusername.github.io</code> (or any name like <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">my-portfolio</code>).</li>
+                <li><strong>Upload <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">index.html</code>:</strong> Click <strong>Add file &rarr; Upload files</strong>, drag this <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-xs">index.html</code> file in, and click <strong>Commit changes</strong>.</li>
+                <li><strong>Turn on GitHub Pages:</strong> Go to your repo's <strong>Settings &rarr; Pages</strong>, set Source to <strong>Deploy from a branch (main)</strong>, and click <strong>Save</strong>. Your live site link will appear in ~1 minute!</li>
+            </ol>
+
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeGithubModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary-600 hover:bg-primary-700 text-white transition">
+                    Got It!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         JAVASCRIPT: Routing, Theme Toggle, Age Calculator & Interactions
+         ===================================================================== -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Set current year in footer
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+        // -----------------------------------------------------------------
+        // 1. MULTI-PAGE HASH ROUTING
+        // Allows bookmarking/sharing URLs like index.html#school or index.html#sports
+        // -----------------------------------------------------------------
+        const validPages = ['about', 'school', 'sports', 'age', 'hobbies', 'contact'];
+
+        function navigateTo(pageId) {
+            if (!validPages.includes(pageId)) pageId = 'about';
+
+            // Hide all page sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Show target page section
+            const targetSection = document.getElementById(`page-${pageId}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Update active state on desktop nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.dataset.page === pageId) {
+                    link.classList.add('bg-primary-50', 'text-primary-700', 'dark:bg-primary-500/15', 'dark:text-primary-300', 'font-semibold');
+                    link.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+                } else {
+                    link.classList.remove('bg-primary-50', 'text-primary-700', 'dark:bg-primary-500/15', 'dark:text-primary-300', 'font-semibold');
+                    link.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+                }
+            });
+
+            // Update active state on mobile nav links
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                if (link.dataset.page === pageId) {
+                    link.classList.add('bg-primary-50', 'text-primary-700', 'dark:bg-primary-500/15', 'dark:text-primary-300', 'font-semibold');
+                    link.classList.remove('text-slate-700', 'dark:text-slate-200');
+                } else {
+                    link.classList.remove('bg-primary-50', 'text-primary-700', 'dark:bg-primary-500/15', 'dark:text-primary-300', 'font-semibold');
+                    link.classList.add('text-slate-700', 'dark:text-slate-200');
+                }
+            });
+
+            // Close mobile menu if open & scroll smoothly to top
+            toggleMobileMenu(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Listen for browser back/forward hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            navigateTo(hash || 'about');
+        });
+
+        // Initial page load check
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialHash = window.location.hash.replace('#', '');
+            navigateTo(initialHash || 'about');
+            updateAgeStats(document.getElementById('birthdate-input').value);
+        });
+
+        // -----------------------------------------------------------------
+        // 2. MOBILE HAMBURGER MENU
+        // -----------------------------------------------------------------
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+
+        function toggleMobileMenu(forceState) {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            const shouldOpen = typeof forceState === 'boolean' ? forceState : isHidden;
+
+            if (shouldOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIconOpen.classList.add('hidden');
+                menuIconClose.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIconOpen.classList.remove('hidden');
+                menuIconClose.classList.add('hidden');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+
+        // -----------------------------------------------------------------
+        // 3. DARK / LIGHT THEME TOGGLE
+        // -----------------------------------------------------------------
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check saved preference or system preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // -----------------------------------------------------------------
+        // 4. DYNAMIC AGE & BIRTHDAY CALCULATOR
+        // -----------------------------------------------------------------
+        function updateAgeStats(birthDateString) {
+            if (!birthDateString) return;
+            const birthDate = new Date(birthDateString + 'T00:00:00');
+            const today = new Date();
+
+            let years = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                years--;
+            }
+
+            const totalMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + (today.getMonth() - birthDate.getMonth());
+
+            // Calculate days until next birthday
+            let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            if (nextBirthday < today) {
+                nextBirthday.setFullYear(today.getFullYear() + 1);
+            }
+            const diffTime = Math.abs(nextBirthday - today);
+            const daysToBirthday = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            // Format readable date
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('display-birthdate').textContent = birthDate.toLocaleDateString('en-US', options);
+
+            // Update DOM elements
+            document.getElementById('live-age-heading').textContent = `${years} Years Old`;
+            document.getElementById('about-quick-age').textContent = `${years} Years Old`;
+            document.getElementById('stat-years').textContent = years;
+            document.getElementById('stat-months').textContent = Math.max(0, totalMonths);
+            document.getElementById('stat-days-next').textContent = daysToBirthday === 365 || daysToBirthday === 366 ? 'Today!' : daysToBirthday;
+        }
+
+        // -----------------------------------------------------------------
+        // 5. GITHUB GUIDE MODAL & CONTACT FEEDBACK
+        // -----------------------------------------------------------------
+        const githubModal = document.getElementById('github-modal');
+
+        function openGithubModal() {
+            githubModal.classList.remove('hidden');
+            githubModal.classList.add('flex');
+        }
+
+        function closeGithubModal() {
+            githubModal.classList.add('hidden');
+            githubModal.classList.remove('flex');
+        }
+
+        // Close modal when clicking outside dialog box
+        githubModal.addEventListener('click', (e) => {
+            if (e.target === githubModal) closeGithubModal();
+        });
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('contact-feedback');
+            feedback.classList.remove('hidden');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
